@@ -94,6 +94,25 @@ def update_v2ray(vmess_dict):
                   "udp": True,
                   "allowTransparent": False
                 }
+              },
+              {
+                  "port": 20812,
+                  "protocol": "vmess",
+                  "settings": {
+                      "clients": [
+                          {
+                              "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
+                              "level": 1,
+                              "alterId": 0
+                          }
+                      ]
+                  },
+                  "streamSettings": {
+                      "network": "ws",
+                      "wsSettings": {
+                          "path": "/2294-44e2-a528-d9fb1adaa35f.v4..live01.m3u8"
+                      }
+                  }
               }
             ],
             "outbounds": [
