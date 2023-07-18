@@ -94,6 +94,28 @@ def update_v2ray(vmess_dict):
                   "udp": True,
                   "allowTransparent": False
                 }
+              },
+              {
+                "port": 20812,
+                "protocol": "vmess",
+                "settings": {
+                  "udp": False,
+                  "clients": [
+                    {
+                      "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
+                      "alterId": 0,
+                      "email": "t@t.tt"
+                    }
+                  ],
+                  "allowTransparent": False
+                },
+                "streamSettings": {
+                  "network": "ws",
+                  "wsSettings": {
+                    "path": "/2294-44e2-a528-d9fb1adaa35f.v4..live01.m3u8",
+                    "headers": {}
+                  }
+                }
               }
             ],
             "outbounds": [
@@ -193,6 +215,15 @@ def update_v2ray(vmess_dict):
                   "ip": [
                     "geoip:private",
                     "geoip:cn"
+                  ],
+                  "enabled": True
+                },
+                {
+                  "id": "4921452774162550052",
+                  "type": "field",
+                  "outboundTag": "direct",
+                  "domain": [
+                      "domain:ling5821.com"
                   ],
                   "enabled": True
                 },
