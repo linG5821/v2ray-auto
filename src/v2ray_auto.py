@@ -17,6 +17,9 @@ def get_proxy_url():
 def get_config_path():
     return getenv('V2RAY_CONFIG_PATH', '/usr/local/etc/v2ray/config.json')
 
+def is_docker():
+   return getenv('V2RAY_IN_DOCKER', 'false') == 'true'
+
 def log(content):
    formatted_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
    print(formatted_time + " " + content)
@@ -35,6 +38,8 @@ def parse_vmess(vmess_link):
 
 def restart_v2ray():
     command = 'systemctl restart v2ray'
+    if is_docker():
+       command = 'supervisorctl restart v2ray_auto'
     try:
       result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
       log("restart v2ray: " + result.stdout.decode('utf-8'))
