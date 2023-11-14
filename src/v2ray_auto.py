@@ -15,7 +15,7 @@ def get_proxy_url():
     return getenv('V2RAY_CUR_PROXY', 'socks5://127.0.0.1:20810')
 
 def get_config_path():
-    return "/usr/local/etc/v2ray/config.json"
+    return getenv('V2RAY_CONFIG_PATH', '/usr/local/etc/v2ray/config.json')
 
 def log(content):
    formatted_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
