@@ -57,7 +57,7 @@ def update_v2ray(vmess_dict):
     path = vmess_dict['path']
     config_json = {
             "log": {
-              "access": "none",
+              "access": "",
               "error": "",
               "loglevel": "warning"
             },
