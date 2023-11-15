@@ -39,7 +39,7 @@ def parse_vmess(vmess_link):
 def restart_v2ray():
     command = 'systemctl restart v2ray'
     if is_docker():
-       command = 'supervisorctl restart v2ray_auto'
+       command = 'supervisorctl restart v2ray'
     try:
       result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
       log("restart v2ray: " + result.stdout.decode('utf-8'))
@@ -259,7 +259,7 @@ def test_vmess() -> bool:
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}
     proxies={'http': proxy_url, 'https': proxy_url}
     try:
-      response = requests.get(url, headers=headers, proxies=proxies, timeout=30)
+      response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
       return response.status_code == 200
     except Exception as ex:
       log("test vmess failed: " + str(ex))
@@ -291,6 +291,7 @@ def main():
     
     for vmess_dict in vmess_dict_list:
         if update_v2ray(vmess_dict):
+           log('proxy update success...')
            break
     
 
