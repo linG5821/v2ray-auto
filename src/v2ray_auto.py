@@ -276,23 +276,26 @@ def main():
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
     }
-    response = requests.get(get_sub_url(), headers=headers)
 
-    vmess_dict_list = []
-    vmess_links = base64.b64decode(response.text).decode('utf-8').split("\n")
-    for vmess_link in vmess_links:
-      if not vmess_link:
-          continue
-      vmess_dict = parse_vmess(vmess_link)
-      
-      if re.search(area_filter, str(vmess_dict['ps'])):
-          continue
-      vmess_dict_list.append(vmess_dict)
+    try:
+      response = requests.get(get_sub_url(), headers=headers)
+      vmess_dict_list = []
+      vmess_links = base64.b64decode(response.text).decode('utf-8').split("\n")
+      for vmess_link in vmess_links:
+        if not vmess_link:
+            continue
+        vmess_dict = parse_vmess(vmess_link)
+        
+        if re.search(area_filter, str(vmess_dict['ps'])):
+            continue
+        vmess_dict_list.append(vmess_dict)
     
-    for vmess_dict in vmess_dict_list:
-        if update_v2ray(vmess_dict):
-           log('proxy update success...')
-           break
+      for vmess_dict in vmess_dict_list:
+          if update_v2ray(vmess_dict):
+            log('proxy update success...')
+            break
+    except Exception as ex:
+      log("get sub failed: " + str(ex))
     
 
 if __name__ == "__main__":
