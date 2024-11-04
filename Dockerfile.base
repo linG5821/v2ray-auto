@@ -1,0 +1,7 @@
+FROM v2fly/v2fly-core:v5.4.1
+
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
+  apk update && apk add --no-cache vim python3 py3-pip busybox-extras supervisor && \
+  pip install requests pysocks
+
+CMD [ "bash" ]

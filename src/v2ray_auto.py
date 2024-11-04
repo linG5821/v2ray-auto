@@ -50,9 +50,9 @@ def restart_v2ray():
 
 def update_v2ray(vmess_dict):
     address = vmess_dict['add']
-    port = vmess_dict['port']
+    port = int(vmess_dict['port'])
     id = vmess_dict['id']
-    aid = vmess_dict['aid']
+    aid = int(vmess_dict['aid'])
     net = vmess_dict['net']
     path = vmess_dict['path']
     config_json = {
