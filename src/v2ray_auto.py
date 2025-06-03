@@ -178,14 +178,6 @@ def update_v2ray(vmess_dict):
               "domainStrategy": "IPIfNonMatch",
               "rules": [
                 {
-                  "type": "field",
-                  "inboundTag": [
-                    "api"
-                  ],
-                  "outboundTag": "api",
-                  "enabled": True
-                },
-                {
                   "id": "5518802383459979880",
                   "type": "field",
                   "outboundTag": "direct",
@@ -201,6 +193,24 @@ def update_v2ray(vmess_dict):
                   "outboundTag": "block",
                   "domain": [
                     "geosite:category-ads-all"
+                  ],
+                  "enabled": True
+                },
+                # 绕过限制 
+                {
+                  "id": "4921452774162550049",
+                  "type": "field",
+                  "outboundTag": "proxy",
+                  "domain": [
+                    "domain:bilibili.com",
+                    "domain:biliapi.net",
+                    "domain:bilivideo.com",
+                    "domain:hdslb.com",
+                    "domain:douyin.com",
+                    "domain:douyincdn.com",
+                    "domain:douyinpic.com",
+                    "domain:douyinstatic.com",
+                    "domain:douyinvod.com"
                   ],
                   "enabled": True
                 },
