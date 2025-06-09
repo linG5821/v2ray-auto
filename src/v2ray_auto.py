@@ -210,7 +210,9 @@ def update_v2ray(vmess_dict):
                     "domain:douyincdn.com",
                     "domain:douyinpic.com",
                     "domain:douyinstatic.com",
-                    "domain:douyinvod.com"
+                    "domain:douyinvod.com",
+                    "domain:music.163.com",
+                    "domain:music.126.net"
                   ],
                   "enabled": True
                 },
