@@ -12,7 +12,7 @@ def get_sub_url():
     return getenv('V2RAY_SUB_URL', '')
 
 def get_area_filter():
-    return getenv('V2RAY_AREA_FILTER', '台湾|新加坡')
+    return getenv('V2RAY_AREA_FILTER', '新用户|过期|剩余|台湾|新加坡')
 
 def get_proxy_url(): 
     return getenv('V2RAY_CUR_PROXY', 'socks5://127.0.0.1:20810')
