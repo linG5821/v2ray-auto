@@ -11,6 +11,9 @@ from datetime import datetime
 def get_sub_url():
     return getenv('V2RAY_SUB_URL', '')
 
+def get_area_filter():
+    return getenv('V2RAY_AREA_FILTER', '台湾|新加坡')
+
 def get_proxy_url(): 
     return getenv('V2RAY_CUR_PROXY', 'socks5://127.0.0.1:20810')
 
@@ -283,7 +286,8 @@ def main():
        log('proxy available...')
        return
 
-    area_filter = r"台湾|新加坡"
+    area_filter = get_area_filter()
+
     headers = {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
@@ -298,7 +302,7 @@ def main():
             continue
         vmess_dict = parse_vmess(vmess_link)
         
-        if re.search(area_filter, str(vmess_dict['ps'])):
+        if area_filter and re.search(area_filter, str(vmess_dict['ps'])):
             continue
         vmess_dict_list.append(vmess_dict)
     
