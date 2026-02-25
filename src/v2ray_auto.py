@@ -305,6 +305,10 @@ def main():
         if area_filter and re.search(area_filter, str(vmess_dict['ps'])):
             continue
         vmess_dict_list.append(vmess_dict)
+      
+      if not vmess_dict_list:
+        log('sub response is empty or no available vmess found...')
+        return 
     
       for vmess_dict in vmess_dict_list:
           if update_v2ray(vmess_dict):
