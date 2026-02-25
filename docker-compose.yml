@@ -1,0 +1,9 @@
+services:
+  v2ray-auto:
+    image: v2ray-auto:latest
+    container_name: v2ray-auto
+    restart: always
+    environment:
+      - V2RAY_SUB_URL=xxx
+    ports:
+        - "30406:20812"
