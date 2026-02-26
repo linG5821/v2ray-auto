@@ -13,6 +13,7 @@ WORKDIR /opt/app
 
 RUN \ 
   # pip install -r /opt/app/requirements.txt && \ 
+  mkdir -p /opt/app/supervisor && \
   echo "*/5 * * * * python3 /opt/app/v2ray_auto.py" > /etc/crontabs/root
 
 ENTRYPOINT ["supervisord", "-c", "/etc/supervisord.conf"]
