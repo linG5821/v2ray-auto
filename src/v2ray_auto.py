@@ -224,7 +224,10 @@ def update_v2ray(vmess_dict):
                   "type": "field",
                   "outboundTag": "direct",
                   "domain": [
-                    "geosite:cn"
+                    "geosite:cn",
+                    "domain:todesk.com",
+                    "domain:oray.com",
+                    "domain:oray.net"
                   ],
                   "enabled": True
                 },
