@@ -107,22 +107,17 @@ def update_v2ray(vmess_dict):
                 "port": 20812,
                 "protocol": "vmess",
                 "settings": {
-                  "udp": False,
+                  "udp": True,
                   "clients": [
                     {
                       "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
                       "alterId": 0,
-                      "email": "t@t.tt"
                     }
                   ],
                   "allowTransparent": False
                 },
                 "streamSettings": {
-                  "network": "ws",
-                  "wsSettings": {
-                    "path": "/2294-44e2-a528-d9fb1adaa35f.v4..live01.m3u8",
-                    "headers": {}
-                  }
+                  "network": "tcp"
                 }
               }
             ],
@@ -162,23 +157,15 @@ def update_v2ray(vmess_dict):
               },
               {
                 "tag": "direct",
-                "protocol": "freedom",
-                "settings": {
-                
-                }
+                "protocol": "freedom"
               },
               {
                 "tag": "block",
-                "protocol": "blackhole",
-                "settings": {
-                  "response": {
-                    "type": "http"
-                  }
-                }
+                "protocol": "blackhole"
               }
             ],
             "routing": {
-              "domainStrategy": "IPIfNonMatch",
+              "domainStrategy": "AsIs",
               "rules": [
                 {
                   "id": "5518802383459979880",
@@ -220,24 +207,99 @@ def update_v2ray(vmess_dict):
                   "enabled": True
                 },
                 {
-                  "id": "5190411545470979683",
                   "type": "field",
-                  "outboundTag": "direct",
+                  "outboundTag": "proxy",
                   "domain": [
-                    "geosite:cn",
-                    "domain:todesk.com",
-                    "domain:oray.com",
-                    "domain:oray.net"
+                      "geosite:google"
                   ],
                   "enabled": True
                 },
                 {
-                  "id": "4921452774162550051",
                   "type": "field",
                   "outboundTag": "direct",
                   "ip": [
-                    "geoip:private",
-                    "geoip:cn"
+                      "geoip:private"
+                  ],
+                  "enabled": True
+                },
+                {
+                  "type": "field",
+                  "outboundTag": "direct",
+                  "domain": [
+                      "geosite:private"
+                  ],
+                  "enabled": True
+                },
+                {
+                  "type": "field",
+                  "outboundTag": "direct",
+                  "ip": [
+                      "223.5.5.5",
+                      "223.6.6.6",
+                      "2400:3200::1",
+                      "2400:3200:baba::1",
+                      "119.29.29.29",
+                      "1.12.12.12",
+                      "120.53.53.53",
+                      "2402:4e00::",
+                      "2402:4e00:1::",
+                      "180.76.76.76",
+                      "2400:da00::6666",
+                      "114.114.114.114",
+                      "114.114.115.115",
+                      "114.114.114.119",
+                      "114.114.115.119",
+                      "114.114.114.110",
+                      "114.114.115.110",
+                      "180.184.1.1",
+                      "180.184.2.2",
+                      "101.226.4.6",
+                      "218.30.118.6",
+                      "123.125.81.6",
+                      "140.207.198.6",
+                      "1.2.4.8",
+                      "210.2.4.8",
+                      "52.80.66.66",
+                      "117.50.22.22",
+                      "2400:7fc0:849e:200::4",
+                      "2404:c2c0:85d8:901::4",
+                      "117.50.10.10",
+                      "52.80.52.52",
+                      "2400:7fc0:849e:200::8",
+                      "2404:c2c0:85d8:901::8",
+                      "117.50.60.30",
+                      "52.80.60.30"
+                  ],
+                  "enabled": True
+                },
+                {
+                  "type": "field",
+                  "outboundTag": "direct",
+                  "domain": [
+                      "domain:alidns.com",
+                      "domain:doh.pub",
+                      "domain:dot.pub",
+                      "domain:360.cn",
+                      "domain:onedns.net",
+                      "domain:todesk.com",
+                      "domain:oray.com",
+                      "domain:oray.net"
+                  ],
+                  "enabled": True
+                },
+                {
+                  "type": "field",
+                  "outboundTag": "direct",
+                  "ip": [
+                      "geoip:cn"
+                  ],
+                  "enabled": True
+                },
+                {
+                  "type": "field",
+                  "outboundTag": "direct",
+                  "domain": [
+                      "geosite:cn"
                   ],
                   "enabled": True
                 },
@@ -248,13 +310,6 @@ def update_v2ray(vmess_dict):
                   "domain": [
                       "domain:ling5821.com"
                   ],
-                  "enabled": True
-                },
-                {
-                  "id": "5038322715420606427",
-                  "type": "field",
-                  "port": "0-65535",
-                  "outboundTag": "proxy",
                   "enabled": True
                 }
               ]
