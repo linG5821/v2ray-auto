@@ -64,6 +64,12 @@ def update_v2ray(vmess_dict):
               "error": "",
               "loglevel": "warning"
             },
+            "dns": {
+              "servers": [
+                "1.1.1.1",
+                "8.8.8.8"
+              ]
+            },
             "inbounds": [
               {
                 "tag": "socks",
