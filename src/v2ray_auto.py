@@ -208,7 +208,8 @@ def update_v2ray(vmess_dict):
                     "domain:douyinstatic.com",
                     "domain:douyinvod.com",
                     "domain:music.163.com",
-                    "domain:music.126.net"
+                    "domain:music.126.net",
+                    "domain:kuwo.cn"
                   ],
                   "enabled": True
                 },
@@ -290,7 +291,6 @@ def update_v2ray(vmess_dict):
                       "domain:todesk.com",
                       "domain:oray.com",
                       "domain:oray.net",
-                      "domain:kuwo.cn",
                       "domain:yhgfb-cn-static.com"
                   ],
                   "enabled": True
