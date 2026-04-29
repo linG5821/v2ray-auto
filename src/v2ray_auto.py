@@ -289,7 +289,9 @@ def update_v2ray(vmess_dict):
                       "domain:onedns.net",
                       "domain:todesk.com",
                       "domain:oray.com",
-                      "domain:oray.net"
+                      "domain:oray.net",
+                      "domain:kuwo.cn",
+                      "domain:yhgfb-cn-static.com"
                   ],
                   "enabled": True
                 },
