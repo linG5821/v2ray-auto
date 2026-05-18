@@ -1,6 +1,6 @@
 FROM v2ray-auto-base:latest
 
-ENV V2RAY_CONFIG_PATH=/etc/xray/config.json
+ENV V2RAY_CONFIG_PATH=/etc/v2ray/config.json
 ENV V2RAY_IN_DOCKER=true
 ENV V2RAY_SUB_URL=''
 ENV TZ='Asia/Shanghai'
