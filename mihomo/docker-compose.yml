@@ -1,0 +1,12 @@
+services:
+  mihomo:
+    image: metacubex/mihomo:latest
+    container_name: mihomo
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "${SOCKS_PORT:-20810}:20810"
+    volumes:
+      - ./config.yaml:/root/.config/mihomo/config.yaml:ro
+      - ./data/mihomo:/root/.config/mihomo

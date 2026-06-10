@@ -1,0 +1,162 @@
+# ============================================================
+# mihomo (Clash Meta) Configuration
+# mixed-port provides both HTTP proxy and SOCKS5 on the same port
+# ============================================================
+
+# Network
+allow-lan: true
+bind-address: "*"
+ipv6: false
+
+# Mode & Logging
+mode: rule
+log-level: info
+
+# HTTP + SOCKS5 proxy port (clients connect here)
+mixed-port: 20810
+
+# External controller for Web Dashboard (optional, port 9090)
+# Access: http://<host>:9090/ui
+external-controller: 0.0.0.0:9090
+secret: ""
+
+# -----------------------------------------------------------
+# DNS
+# -----------------------------------------------------------
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fallback:
+    - https://dns.alidns.com/dns-query
+    - tcp://208.67.222.222:443
+  fallback-filter:
+    geoip: true
+    geoip-code: CN
+  fake-ip-filter:
+    # STUN (WebRTC / VoIP)
+    - +.stun.*.*
+    - +.stun.*.*.*
+    - +.stun.*.*.*.*
+    - +.stun.*.*.*.*.*
+    - +.stun.playstation.net
+    # Nintendo Switch
+    - "*.n.n.srv.nintendo.net"
+    # Xbox Live
+    - xbox.*.*.microsoft.com
+    - "*.*.xboxlive.com"
+    # Windows network connectivity check
+    - "*.msftncsi.com"
+    - "*.msftconnecttest.com"
+    # Windows WORKGROUP
+    - WORKGROUP
+
+
+proxies:
+  # --- PUT YOUR BOOTSTRAP NODE BELOW (uncomment and fill in) ---
+  # - name: "bootstrap"
+  #   type: vmess
+  #   server: YOUR_SERVER
+  #   port: 443
+  #   uuid: YOUR_UUID
+  #   alterId: 0
+  #   cipher: auto
+
+# -----------------------------------------------------------
+# Health check template (shared by proxy-providers and url-test groups)
+# -----------------------------------------------------------
+my-url-test: &my-url-test
+  health-check:
+    enable: true
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    timeout: 2000
+    tolerance: 150
+
+# -----------------------------------------------------------
+# Proxy Providers (auto-update from subscription)
+# -----------------------------------------------------------
+proxy-providers:
+  sub:
+    type: http
+    url: YOUR_SUB_URL_HERE
+    interval: 3600
+    path: /root/.config/mihomo/moxiong_sub.yaml
+    # proxy: bootstrap
+    <<: *my-url-test
+
+# -----------------------------------------------------------
+# Proxy Groups
+# -----------------------------------------------------------
+proxy-groups:
+  - name: PROXY
+    type: select
+    proxies:
+      - AUTO
+      - DIRECT
+      - REJECT
+
+  - name: AUTO
+    type: url-test
+    use:
+      - sub
+    url: http://www.gstatic.com/generate_204
+    interval: 300
+    tolerance: 150
+
+# -----------------------------------------------------------
+# Routing Rules
+# -----------------------------------------------------------
+rules:
+  # -- Block Ads
+  - GEOSITE,category-ads-all,REJECT
+
+  # -- CN services that need proxy (geo-restricted content)
+  #    bilibili
+  - DOMAIN-SUFFIX,bilibili.com,PROXY
+  - DOMAIN-SUFFIX,biliapi.net,PROXY
+  - DOMAIN-SUFFIX,bilivideo.com,PROXY
+  - DOMAIN-SUFFIX,hdslb.com,PROXY
+  #    douyin
+  - DOMAIN-SUFFIX,douyin.com,PROXY
+  - DOMAIN-SUFFIX,douyincdn.com,PROXY
+  - DOMAIN-SUFFIX,douyinpic.com,PROXY
+  - DOMAIN-SUFFIX,douyinstatic.com,PROXY
+  - DOMAIN-SUFFIX,douyinvod.com,PROXY
+  #    netease music
+  - DOMAIN-SUFFIX,music.163.com,PROXY
+  - DOMAIN-SUFFIX,music.126.net,PROXY
+  #    kuwo
+  - DOMAIN-SUFFIX,kuwo.cn,PROXY
+
+  # -- Google services via proxy
+  - GEOSITE,google,PROXY
+
+  # -- Chinese DNS / connectivity services → direct
+  - DOMAIN-SUFFIX,alidns.com,DIRECT
+  - DOMAIN,doh.pub,DIRECT
+  - DOMAIN,dot.pub,DIRECT
+  - DOMAIN-SUFFIX,360.cn,DIRECT
+  - DOMAIN-SUFFIX,onedns.net,DIRECT
+  - DOMAIN-SUFFIX,todesk.com,DIRECT
+  - DOMAIN-SUFFIX,oray.com,DIRECT
+  - DOMAIN-SUFFIX,oray.net,DIRECT
+  - DOMAIN-SUFFIX,yhgfb-cn-static.com,DIRECT
+
+  # -- Private/LAN IPs → direct (no DNS resolve needed)
+  - IP-CIDR,192.168.0.0/16,DIRECT,no-resolve
+  - IP-CIDR,10.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,172.16.0.0/12,DIRECT,no-resolve
+  - IP-CIDR,127.0.0.0/8,DIRECT,no-resolve
+  - IP-CIDR,100.64.0.0/10,DIRECT,no-resolve
+
+  # -- All CN content → direct
+  - GEOSITE,cn,DIRECT
+  - GEOIP,cn,DIRECT
+
+  # -- Default: proxy everything else
+  - MATCH,PROXY

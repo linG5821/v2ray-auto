@@ -19,6 +19,9 @@ def get_area_filter():
 def get_proxy_url():
     return getenv("V2RAY_CUR_PROXY", "socks5://127.0.0.1:20810")
 
+def get_test_retry_count():
+    return int(getenv("V2RAY_TEST_RETRY_COUNT", "3"))
+
 
 def get_config_path():
     return getenv("V2RAY_CONFIG_PATH", "/usr/local/etc/v2ray/config.json")
@@ -252,7 +255,7 @@ def restart_v2ray():
             command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
         log("restart v2ray(xray): " + result.stdout.decode("utf-8"))
-        sleep(1)
+        sleep(5)
     except Exception as e:
         log("restart v2ray(xray) failed: " + str(e))
 
@@ -459,18 +462,23 @@ def update_v2ray(proxy_dict):
 
 def test_proxy() -> bool:
     proxy_url = get_proxy_url()
+    test_retry_count = get_test_retry_count()
     url = "http://www.google.com"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
     }
     proxies = {"http": proxy_url, "https": proxy_url}
-    try:
-        response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
-        return response.status_code == 200
-    except Exception as ex:
-        log("test proxy failed: " + str(ex))
-        return False
-
+    for attempt in range(1, test_retry_count + 1):
+        try:
+            response = requests.get(url, headers=headers, proxies=proxies, timeout=10)
+            if response.status_code == 200:
+                return True
+            log(f"test proxy failed, status_code={response.status_code}, attempt={attempt}/{test_retry_count}")
+        except Exception as ex:
+            log(f"test proxy exception: {ex}, attempt={attempt}/{test_retry_count}")
+        if attempt < test_retry_count:
+            sleep(1)  # 等待2秒后重试
+    return False
 
 def main():
 

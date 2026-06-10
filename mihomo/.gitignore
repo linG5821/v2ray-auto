@@ -1,0 +1,5 @@
+# Runtime data (cached profiles, MMDB databases, logs)
+data/
+profiles/
+*.mmdb
+*.dat
