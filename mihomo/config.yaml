@@ -32,8 +32,9 @@ dns:
     - 223.5.5.5
     - 119.29.29.29
   fallback:
+    - https://1.1.1.1/dns-query
+    - https://8.8.8.8/dns-query
     - https://dns.alidns.com/dns-query
-    - tcp://208.67.222.222:443
   fallback-filter:
     geoip: true
     geoip-code: CN
@@ -72,10 +73,10 @@ proxies:
 my-url-test: &my-url-test
   health-check:
     enable: true
-    url: http://www.gstatic.com/generate_204
-    interval: 300
-    timeout: 2000
-    tolerance: 150
+    url: https://cp.cloudflare.com/generate_204
+    interval: 1800
+    timeout: 5000
+    lazy: true
 
 # -----------------------------------------------------------
 # Proxy Providers (auto-update from subscription)
@@ -93,21 +94,80 @@ proxy-providers:
 # Proxy Groups
 # -----------------------------------------------------------
 proxy-groups:
+  # 主选择器
   - name: PROXY
     type: select
     proxies:
       - AUTO
+      - HK
+      - TW
+      - JP
+      - SG
+      - US
+      - ALL
       - DIRECT
       - REJECT
-
-  - name: AUTO
+  # 全节点手动选择
+  - name: ALL
+    type: select
+    use:
+      - sub
+  # 香港
+  - name: HK
     type: url-test
     use:
       - sub
-    exclude-filter: "福利"
-    url: http://www.gstatic.com/generate_204
-    interval: 300
+    filter: "(?i)(香港|hk|hongkong)"
+    url: https://cp.cloudflare.com/generate_204
+    interval: 1800
     tolerance: 150
+  # 台湾
+  - name: TW
+    type: url-test
+    use:
+      - sub
+    filter: "(?i)(台湾|tw|taiwan)"
+    url: https://cp.cloudflare.com/generate_204
+    interval: 1800
+    tolerance: 150
+  # 日本
+  - name: JP
+    type: url-test
+    use:
+      - sub
+    filter: "(?i)(日本|jp|japan)"
+    url: https://cp.cloudflare.com/generate_204
+    interval: 1800
+    tolerance: 150
+  # 新加坡
+  - name: SG
+    type: url-test
+    use:
+      - sub
+    filter: "(?i)(新加坡|sg|singapore)"
+    url: https://cp.cloudflare.com/generate_204
+    interval: 1800
+    tolerance: 150
+  # 美国
+  - name: US
+    type: url-test
+    use:
+      - sub
+    filter: "(?i)(美国|us|usa|america)"
+    url: https://cp.cloudflare.com/generate_204
+    interval: 1800
+    tolerance: 150
+  # 自动故障切换
+  - name: AUTO
+    type: fallback
+    proxies:
+      - HK
+      - TW
+      - JP
+      - SG
+      - US
+    url: https://cp.cloudflare.com/generate_204
+    interval: 1800
 
 # -----------------------------------------------------------
 # Routing Rules
@@ -136,6 +196,29 @@ rules:
 
   # -- Google services via proxy
   - GEOSITE,google,PROXY
+  
+  # OpenAI
+  - GEOSITE,openai,PROXY
+
+  # Github
+  - GEOSITE,github,PROXY
+
+  # Telegram
+  - GEOSITE,telegram,PROXY
+
+  # Netflix
+  - GEOSITE,netflix,PROXY
+
+  # Disney+
+  - GEOSITE,disney,PROXY
+
+  # Microsoft AI
+  - DOMAIN-SUFFIX,bing.com,PROXY
+  - DOMAIN-SUFFIX,copilot.microsoft.com,PROXY
+
+  # Anthropic
+  - DOMAIN-SUFFIX,anthropic.com,PROXY
+  - DOMAIN-SUFFIX,claude.ai,PROXY
 
   # -- Chinese DNS / connectivity services → direct
   - DOMAIN-SUFFIX,alidns.com,DIRECT
