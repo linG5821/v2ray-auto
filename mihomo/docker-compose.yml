@@ -1,12 +1,28 @@
 services:
+  metacubexd:
+    container_name: metacubexd
+    image: ghcr.io/metacubex/metacubexd
+    restart: always
+      #ports:
+      #- "30509:30509"
+    network_mode: host
+    environment:
+      - DEFAULT_BACKEND_URL=http://192.168.8.228:30508
+      - PORT=30509
   mihomo:
     image: metacubex/mihomo:latest
     container_name: mihomo
     restart: always
     environment:
       - TZ=Asia/Shanghai
-    ports:
-      - "${SOCKS_PORT:-20810}:20810"
+    network_mode: host
+      #ports:
+      #- "30507:30507/tcp"
+      #- "30507:30507/udp"
+      #- "30508:30508/tcp"
+      #- "30553:30553/tcp"
+      #- "30553:30553/udp"
     volumes:
       - ./config.yaml:/root/.config/mihomo/config.yaml:ro
       - ./data/mihomo:/root/.config/mihomo
+

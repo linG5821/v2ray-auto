@@ -13,11 +13,12 @@ mode: rule
 log-level: info
 
 # HTTP + SOCKS5 proxy port (clients connect here)
-mixed-port: 20810
+socks-port: 30507
+mixed-port: 30506
 
 # External controller for Web Dashboard (optional, port 9090)
 # Access: http://<host>:9090/ui
-external-controller: 0.0.0.0:9090
+external-controller: 0.0.0.0:30508
 secret: ""
 
 # -----------------------------------------------------------
@@ -25,16 +26,16 @@ secret: ""
 # -----------------------------------------------------------
 dns:
   enable: true
-  listen: 0.0.0.0:1053
-  enhanced-mode: fake-ip
-  fake-ip-range: 198.18.0.1/16
+  ipv6: false
+  listen: 0.0.0.0:30553
+  enhanced-mode: redir-host
   nameserver:
+    - 119.29.29.29
+    - 223.5.5.5
     - 1.1.1.1
     - 8.8.8.8
   fallback:
-    - https://1.1.1.1/dns-query
-    - https://8.8.8.8/dns-query
-    - https://dns.alidns.com/dns-query
+    - 223.6.6.6
   fallback-filter:
     geoip: true
     geoip-code: CN
@@ -45,16 +46,6 @@ dns:
     - +.stun.*.*.*.*
     - +.stun.*.*.*.*.*
     - +.stun.playstation.net
-    # Nintendo Switch
-    - "*.n.n.srv.nintendo.net"
-    # Xbox Live
-    - xbox.*.*.microsoft.com
-    - "*.*.xboxlive.com"
-    # Windows network connectivity check
-    - "*.msftncsi.com"
-    - "*.msftconnecttest.com"
-    # Windows WORKGROUP
-    - WORKGROUP
 
 
 proxies:
